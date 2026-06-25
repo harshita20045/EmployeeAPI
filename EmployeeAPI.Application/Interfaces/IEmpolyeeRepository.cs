@@ -9,9 +9,9 @@ namespace EmployeeAPI.Application.Interfaces
 {
     public interface IEmployeeRepository
     {
-        public void AddEmployee(Employee employee);
+        public Employee AddEmployee(Employee employee);
 
-        public void UpdateEmployee(Employee employee);
+        public Employee UpdateEmployee(Employee employee);
 
         public void DeleteEmployee(Employee employee);
 
