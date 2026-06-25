@@ -8,25 +8,25 @@ namespace EmployeeAPI.API.Controllers
     [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployeeRepository _repository;
+        private readonly IEmployeeService _services;
 
-        public EmployeeController(IEmployeeRepository repository)
+        public EmployeeController(IEmployeeService services)
         {
-            _repository = repository;
+            _services = services;
         }
 
     
         [HttpGet]
         public IActionResult GetAll()
         {
-            var employees = _repository.GetAllEmployees();
+            var employees = _services.GetAllEmployees();
             return Ok(employees);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var employee = _repository.GetEmployeeById(id);
+            var employee = _services.GetEmployeeById(id);
 
             if (employee == null)
                 return NotFound();
@@ -36,12 +36,12 @@ namespace EmployeeAPI.API.Controllers
 
   
         [HttpPost]
-        public IActionResult Create(Employee employee)
+         public IActionResult Create(Employee employee)
         {
-            if (employee == null)
+             if (employee == null)
                 return BadRequest();
 
-            _repository.AddEmployee(employee);
+            _services.AddEmployee(employee);
             return Ok(employee);
         }
 
@@ -51,23 +51,23 @@ namespace EmployeeAPI.API.Controllers
             if (id != employee.Id)
                 return BadRequest();
 
-            var existing = _repository.GetEmployeeById(id);
+            var existing = _services.GetEmployeeById(id);
             if (existing == null)
                 return NotFound();
 
-            _repository.UpdateEmployee(employee);
+            _services.UpdateEmployee(employee);
             return Ok(employee);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var employee = _repository.GetEmployeeById(id);
+            var employee = _services.GetEmployeeById(id);
 
             if (employee == null)
                 return NotFound();
 
-            _repository.DeleteEmployee(employee);
+            _services.DeleteEmployee(employee);
             return Ok();
         }
     }
