@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using EmployeeAPI.Application.Interfaces;
 using EmployeeAPI.Domain.Entities;
@@ -16,16 +17,35 @@ namespace EmployeeAPI.Infrastructure.Repository
             _context = context;
         }
 
-        public void AddEmployee(Employee employee)
+        public Employee AddEmployee(Employee employee)
         {
+            var Employee = new Employee
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email
+            };
+     
+
             _context.Employees.Add(employee);
+
             _context.SaveChanges();
+
+            return employee;
         }
 
-        public void UpdateEmployee(Employee employee)
+        public Employee UpdateEmployee(Employee employee)
         {
+            var Employee = new Employee
+            {
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email
+            };
             _context.Employees.Update(employee);
             _context.SaveChanges();
+            return employee;
+
         }
 
         public void DeleteEmployee(Employee employee)

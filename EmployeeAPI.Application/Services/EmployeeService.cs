@@ -18,18 +18,21 @@ namespace EmployeeAPI.Application.Services
             _employee = employee;
         }
 
-           public void AddEmployee(Employee employee)
+           public Employee AddEmployee(Employee employee)
          {
+            Console.WriteLine("Service Hit");  
             _employee.AddEmployee(employee);
+            return employee;
         }
         public void DeleteEmployee(Employee employee)
         {
             _employee.DeleteEmployee(employee);
 
         }
-        public void UpdateEmployee(Employee employee)
+        public Employee UpdateEmployee(Employee employee)
          {
             _employee.UpdateEmployee(employee);
+            return employee;
         }
 
         public Employee GetEmployeeById(int id)

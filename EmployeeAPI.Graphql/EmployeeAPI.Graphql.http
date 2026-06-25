@@ -1,0 +1,6 @@
+@EmployeeAPI.Graphql_HostAddress = http://localhost:5074
+
+GET {{EmployeeAPI.Graphql_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
