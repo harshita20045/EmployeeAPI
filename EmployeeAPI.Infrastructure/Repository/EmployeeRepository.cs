@@ -36,16 +36,21 @@ namespace EmployeeAPI.Infrastructure.Repository
 
         public Employee UpdateEmployee(Employee employee)
         {
-            var Employee = new Employee
-            {
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                Email = employee.Email
-            };
-            _context.Employees.Update(employee);
-            _context.SaveChanges();
-            return employee;
+            var existing = _context.Employees.Find(employee.Id);
 
+            if (existing == null)
+            {
+                throw new Exception($"Employee with Id {employee.Id} not found");
+            }
+
+           
+            existing.FirstName = employee.FirstName;
+            existing.LastName = employee.LastName;
+            existing.Email = employee.Email;
+
+            _context.SaveChanges();
+
+            return existing;
         }
 
         public void DeleteEmployee(Employee employee)

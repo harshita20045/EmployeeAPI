@@ -16,15 +16,15 @@ namespace EmployeeAPI.Graphql.Mutations
             employeeService.UpdateEmployee(employee);
             return Task.FromResult(employee);
         }
-         public void DeleteEmployee(int id, [Service] IEmployeeService employeeService)
+        public bool DeleteEmployee(int id, [Service] IEmployeeService employeeService)
         {
             var employee = employeeService.GetEmployeeById(id);
+
             if (employee == null)
-            {
-                throw new Exception("Something went wrong");
-            }
+                return false;
+
             employeeService.DeleteEmployee(employee);
-           
+            return true;
         }
     }
 }
