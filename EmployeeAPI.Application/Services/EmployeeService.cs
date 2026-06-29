@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using EmployeeAPI.Domain.Entities;
 using EmployeeAPI.Application.Interfaces;
+using EmployeeAPI.Application.DTOs;
 
 namespace EmployeeAPI.Application.Services
 {
@@ -18,11 +19,24 @@ namespace EmployeeAPI.Application.Services
             _employee = employee;
         }
 
-           public Employee AddEmployee(Employee employee)
+           public async Task<EmployeeDto> AddEmployee(AddEmployeeInput dto)
          {
-            Console.WriteLine("Service Hit");  
-            _employee.AddEmployee(employee);
-            return employee;
+            var employee = new Employee
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                DepartmentId = dto.DepartmentId
+            };
+         var emp= await  _employee.AddEmployee(employee);
+            return new EmployeeDto
+            {
+                Id=emp.Id,
+                FirstName = emp.FirstName,
+                LastName = emp.LastName,
+                Email = emp.Email,
+
+            };
         }
         public void DeleteEmployee(Employee employee)
         {
@@ -35,14 +49,19 @@ namespace EmployeeAPI.Application.Services
             return employee;
         }
 
-        public Employee GetEmployeeById(int id)
+        public async Task<EmployeeDto> GetEmployeeById(int id)
         {
-            return _employee.GetEmployeeById(id);
+            return await _employee.GetEmployeeById(id);
         }
 
-          public IEnumerable<Employee> GetAllEmployees()
+          public Task<IEnumerable<EmployeeDto>> GetAllEmployees()
         {
             return _employee.GetAllEmployees();
         }
+        public IEnumerable<Project> GetProjectOfEmployee(int id) {
+            return _employee.GetProjectOfEmployee(id);
+        
+        }
+
     }
 }

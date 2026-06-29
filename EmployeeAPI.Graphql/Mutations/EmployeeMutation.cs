@@ -1,17 +1,19 @@
 ﻿using EmployeeAPI.Domain.Entities;
 using EmployeeAPI.Application.Interfaces;
+using EmployeeAPI.Application.DTOs;
 namespace EmployeeAPI.Graphql.Mutations
 
 {
     public class EmployeeMutation
     {
-           public  Task<Employee> AddEmployee(Employee employee, [Service] IEmployeeService employeeService)
+         
+        public async Task<EmployeeDto> AddEmployee(
+      AddEmployeeInput input,
+      [Service] IEmployeeService employeeService)
         {
-            employeeService.AddEmployee(employee);
-            Console.WriteLine("Mutation Hit");
-            return Task.FromResult(employee);
+            return await employeeService.AddEmployee(input);
         }
-            public Task<Employee> UpdateEmployee(Employee employee, [Service] IEmployeeService employeeService)
+        public Task<Employee> UpdateEmployee(Employee employee, [Service] IEmployeeService employeeService)
         {
             employeeService.UpdateEmployee(employee);
             return Task.FromResult(employee);

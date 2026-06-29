@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using EmployeeAPI.Application.DTOs;
 using EmployeeAPI.Application.Interfaces;
 using EmployeeAPI.Domain.Entities;
 using EmployeeAPI.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeAPI.Infrastructure.Repository
 {
@@ -17,19 +15,14 @@ namespace EmployeeAPI.Infrastructure.Repository
             _context = context;
         }
 
-        public Employee AddEmployee(Employee employee)
+        public async Task<Employee> AddEmployee(Employee employee)
         {
-            var Employee = new Employee
-            {
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                Email = employee.Email
-            };
+
      
 
-            _context.Employees.Add(employee);
+           await _context.Employees.AddAsync(employee);
 
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
 
             return employee;
         }
@@ -59,18 +52,43 @@ namespace EmployeeAPI.Infrastructure.Repository
             _context.SaveChanges();
         }
 
-        public Employee GetEmployeeById(int id)
+        public async Task<EmployeeDto?> GetEmployeeById(int id)
         {
-            return _context.Employees.Find(id);
+            var employee = await _context.Employees
+                .Include(e => e.Department)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (employee == null)
+                return null;
+
+            return new EmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                DepartmentName = employee.Department?.Name
+            };
         }
 
-        public IEnumerable<Employee> GetAllEmployees()
+        public async Task<IEnumerable<EmployeeDto>> GetAllEmployees()
         {
-            return _context.Employees.ToList();
+            return await _context.Employees.Include(e => e.Department).Select(e => new EmployeeDto {
+         Id = e.Id,
+         FirstName = e.FirstName,
+         LastName = e.LastName,
+         Email = e.Email,
+         DepartmentName = e.Department.Name
+     }).ToListAsync();
         }
 
-        
 
-      
+        public IEnumerable<Project> GetProjectOfEmployee(int id) {
+
+            return _context.Employees.Where(e=>e.Id==id).SelectMany(e=>e.Projects).ToList();
+        }
+
+    
+
     }
 }

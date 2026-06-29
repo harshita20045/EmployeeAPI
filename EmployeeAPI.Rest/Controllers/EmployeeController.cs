@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EmployeeAPI.Application.DTOs;
 using EmployeeAPI.Application.Interfaces;
 using EmployeeAPI.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeAPI.API.Controllers
 {
@@ -17,16 +18,16 @@ namespace EmployeeAPI.API.Controllers
 
     
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var employees = _services.GetAllEmployees();
+            var employees =await _services.GetAllEmployees();
             return Ok(employees);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var employee = _services.GetEmployeeById(id);
+            var employee =await _services.GetEmployeeById(id);
 
             if (employee == null)
                 return NotFound();
@@ -34,15 +35,15 @@ namespace EmployeeAPI.API.Controllers
             return Ok(employee);
         }
 
-  
+
         [HttpPost]
-         public IActionResult Create(Employee employee)
+        public async Task<IActionResult> Create(AddEmployeeInput employee)
         {
-             if (employee == null)
+            if (employee == null)
                 return BadRequest();
 
-            _services.AddEmployee(employee);
-            return Ok(employee);
+            await _services.AddEmployee(employee);
+            return Ok(new{message="employee added successfully",data=employee});
         }
 
         [HttpPut("{id}")]
@@ -59,16 +60,22 @@ namespace EmployeeAPI.API.Controllers
             return Ok(employee);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var employee = _services.GetEmployeeById(id);
+        //[HttpDelete("{id}")]
+        //public IActionResult Delete(int id)
+        //{
+        //    var employee = _services.GetEmployeeById(id);
 
-            if (employee == null)
-                return NotFound();
+        //    if (employee == null)
+        //        return NotFound();
 
-            _services.DeleteEmployee(employee);
-            return Ok();
+        //    _services.DeleteEmployee(employee);
+        //    return Ok();
+        //}
+
+        [HttpGet("{id}/projects")]
+        public IActionResult GetProjectOfEmployee(int id) {
+            var projects = _services.GetProjectOfEmployee(id);
+            return Ok(projects);
         }
     }
 }

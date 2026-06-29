@@ -13,9 +13,9 @@ namespace EmployeeAPI.Grpc.Services
             _service = service;
         }
 
-        public override Task<GetAllEmployeeResponse> GetEmployee(Empty request, ServerCallContext context)
+        public override async Task<GetAllEmployeeResponse> GetEmployee(Empty request, ServerCallContext context)
         {
-            var employees = _service.GetAllEmployees();
+            var employees =await  _service.GetAllEmployees();
 
             var response = new GetAllEmployeeResponse();
 
@@ -27,12 +27,12 @@ namespace EmployeeAPI.Grpc.Services
                 Email = p.Email
             }));
 
-            return Task.FromResult(response);
+            return response;
         }
 
-        public override Task<GetEmployeeResponse> GetEmployeeById(GetEmployeeByIdRequest request, ServerCallContext context)
+        public override async Task<GetEmployeeResponse> GetEmployeeById(GetEmployeeByIdRequest request, ServerCallContext context)
         {
-            var employee = _service.GetEmployeeById(request.Id);
+            var employee =await _service.GetEmployeeById(request.Id);
 
             if (employee == null)
                 throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
@@ -45,27 +45,28 @@ namespace EmployeeAPI.Grpc.Services
                 Email = employee.Email
             };
 
-            return Task.FromResult(response);
+            return  response;
         }
 
-        public override Task<GetEmployeeResponse> CreateEmployee(CreateEmployeeRequest request, ServerCallContext context)
+        public override async Task<GetEmployeeResponse> CreateEmployee(CreateEmployeeRequest request, ServerCallContext context)
         {
-            var employee = new Domain.Entities.Employee
+            var employee = new Application.DTOs.AddEmployeeInput
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Email = request.Email
+                Email = request.Email,
+                DepartmentId=request.DepartmentId,
             };
 
-            var result = _service.AddEmployee(employee);
+            var result = await _service.AddEmployee(employee);
 
-            return Task.FromResult(new GetEmployeeResponse
+            return new GetEmployeeResponse
             {
                 Id = result.Id,
                 FirstName = result.FirstName,
                 LastName = result.LastName,
                 Email = result.Email
-            });
+            };
         }
 
         public override Task<GetEmployeeResponse> UpdateEmployee(UpdateEmployeeRequest request, ServerCallContext context)
@@ -89,19 +90,19 @@ namespace EmployeeAPI.Grpc.Services
             });
         }
 
-        public override Task<DeleteEmployeeResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
-        {
-            var employee = _service.GetEmployeeById(request.Id);
+        //public override Task<DeleteEmployeeResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
+        //{
+        //    var employee = _service.GetEmployeeById(request.Id);
 
-            if (employee == null)
-                throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
+        //    if (employee == null)
+        //        throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
 
-            _service.DeleteEmployee(employee);
+        //    _service.DeleteEmployee(employee);
 
-            return Task.FromResult(new DeleteEmployeeResponse
-            {
-                Message = "Employee deleted successfully"
-            });
-        }
+        //    return Task.FromResult(new DeleteEmployeeResponse
+        //    {
+        //        Message = "Employee deleted successfully"
+        //    });
+        //}
     }
 }

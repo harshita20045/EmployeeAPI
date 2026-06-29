@@ -14,6 +14,9 @@ namespace EmployeeAPI.Infrastructure.Data
         }
 
         public DbSet<Employee> Employees { get; set; }  
+        public DbSet<Department> Departments { get; set; }
+
+        public DbSet<Project> Projects { get; set; }
 
 
     }
