@@ -18,15 +18,11 @@ namespace EmployeeAPI.Graphql.Mutations
             employeeService.UpdateEmployee(employee);
             return Task.FromResult(employee);
         }
-        public bool DeleteEmployee(int id, [Service] IEmployeeService employeeService)
+        public async Task<bool> DeleteEmployee(int id, [Service] IEmployeeService employeeService)
         {
-            var employee = employeeService.GetEmployeeById(id);
-
-            if (employee == null)
-                return false;
-
-            employeeService.DeleteEmployee(employee);
-            return true;
+            
+        return await  employeeService.DeleteEmployee(id);
+           
         }
     }
 }

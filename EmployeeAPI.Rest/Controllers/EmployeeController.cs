@@ -47,12 +47,12 @@ namespace EmployeeAPI.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Employee employee)
+        public async Task<IActionResult> Update(int id, Employee employee)
         {
             if (id != employee.Id)
                 return BadRequest();
 
-            var existing = _services.GetEmployeeById(id);
+            var existing =await _services.GetEmployeeById(id);
             if (existing == null)
                 return NotFound();
 
@@ -73,9 +73,16 @@ namespace EmployeeAPI.API.Controllers
         //}
 
         [HttpGet("{id}/projects")]
-        public IActionResult GetProjectOfEmployee(int id) {
+        public async Task<IActionResult> GetProjectOfEmployee(int id) {
             var projects = _services.GetProjectOfEmployee(id);
             return Ok(projects);
+        }
+
+        [HttpPost("/assignProject")]
+        public async Task<IActionResult> AssignProject(int projectId, int employeeId) {
+            var employee = await _services.AssignProject(projectId,employeeId);
+            return Ok(employee);
+
         }
     }
 }

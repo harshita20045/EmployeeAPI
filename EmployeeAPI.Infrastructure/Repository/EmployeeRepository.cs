@@ -1,4 +1,5 @@
-﻿using EmployeeAPI.Application.DTOs;
+﻿using System.Diagnostics.Metrics;
+using EmployeeAPI.Application.DTOs;
 using EmployeeAPI.Application.Interfaces;
 using EmployeeAPI.Domain.Entities;
 using EmployeeAPI.Infrastructure.Data;
@@ -46,10 +47,12 @@ namespace EmployeeAPI.Infrastructure.Repository
             return existing;
         }
 
-        public void DeleteEmployee(Employee employee)
+        public async Task<bool> DeleteEmployee(int id)
         {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e=>e.Id==id);
+
             _context.Employees.Remove(employee);
-            _context.SaveChanges();
+            return true;
         }
 
         public async Task<EmployeeDto?> GetEmployeeById(int id)
@@ -88,7 +91,16 @@ namespace EmployeeAPI.Infrastructure.Repository
             return _context.Employees.Where(e=>e.Id==id).SelectMany(e=>e.Projects).ToList();
         }
 
-    
+        public async Task<Employee> AssignProject(int projectId, int employeeId)
+        {
+            var employee = await _context.Employees.FindAsync(employeeId);
+            var projects = await _context.Projects.FindAsync(projectId);
+
+            employee.Projects.Add(projects);
+
+           return await _context.Employees.Include(p => p.Projects).FirstOrDefaultAsync(e => e.Id == employeeId);
+           
+        }
 
     }
 }

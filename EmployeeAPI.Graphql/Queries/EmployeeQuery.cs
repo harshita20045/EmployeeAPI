@@ -1,23 +1,24 @@
 ﻿using EmployeeAPI.Domain.Entities;
 using EmployeeAPI.Application.Interfaces;   
+using EmployeeAPI.Application.DTOs;   
 
 
 namespace EmployeeAPI.Graphql.Queries
 {
     public class EmployeeQuery
     {
-        public Task<IEnumerable<Employee>> GetAllEmployees([Service] IEmployeeService employeeService)
+        public async Task<IEnumerable<EmployeeDto>> GetAllEmployees([Service] IEmployeeService employeeService)
         {
-            return Task.FromResult(employeeService.GetAllEmployees());
+            return  await employeeService.GetAllEmployees();
         }
-          public Task<Employee> GetEmployeeById(int id, [Service] IEmployeeService employeeService)
+          public async Task<EmployeeDto> GetEmployeeById(int id, [Service] IEmployeeService employeeService)
         {
-            var employee = employeeService.GetEmployeeById(id);
+            var employee =await employeeService.GetEmployeeById(id);
             if (employee == null)
             {
                 throw new Exception("Something went wrong");
             }
-            return Task.FromResult(employee);
+            return await Task.FromResult(employee);
         }
     }
 }

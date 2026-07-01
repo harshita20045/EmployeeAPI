@@ -16,7 +16,7 @@ public interface IEmployeeService
 
         public Employee UpdateEmployee(Employee employee);
 
-        public void DeleteEmployee(Employee employee);
+        public Task<bool> DeleteEmployee(int id);
 
 
       public Task<EmployeeDto> GetEmployeeById(int id);
@@ -25,6 +25,8 @@ public interface IEmployeeService
       public Task<IEnumerable<EmployeeDto>> GetAllEmployees();
 
         public IEnumerable<Project> GetProjectOfEmployee(int id);
+
+        public Task<Employee> AssignProject(int projectId, int employeeId);
 
 
 

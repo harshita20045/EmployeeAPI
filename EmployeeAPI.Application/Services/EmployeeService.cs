@@ -38,9 +38,11 @@ namespace EmployeeAPI.Application.Services
 
             };
         }
-        public void DeleteEmployee(Employee employee)
+        public async Task<bool> DeleteEmployee(int id)
         {
-            _employee.DeleteEmployee(employee);
+
+         return await  _employee.DeleteEmployee(id);
+
 
         }
         public Employee UpdateEmployee(Employee employee)
@@ -54,13 +56,19 @@ namespace EmployeeAPI.Application.Services
             return await _employee.GetEmployeeById(id);
         }
 
-          public Task<IEnumerable<EmployeeDto>> GetAllEmployees()
+          public async Task<IEnumerable<EmployeeDto>> GetAllEmployees()
         {
-            return _employee.GetAllEmployees();
+            return await _employee.GetAllEmployees();
         }
         public IEnumerable<Project> GetProjectOfEmployee(int id) {
             return _employee.GetProjectOfEmployee(id);
         
+        }
+
+        public async Task<Employee> AssignProject(int projectId, int employeeId)
+        {
+
+            return await _employee.AssignProject(projectId, employeeId);
         }
 
     }

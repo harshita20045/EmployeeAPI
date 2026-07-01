@@ -12,13 +12,15 @@ namespace EmployeeAPI.Application.Interfaces
     {
         public Task<Department> AddDepartment(Department department);
 
-        //public Department UpdateDepartment(Department department);
+        public Task<Department> UpdateDepartment(Department department);
 
-        //public Department GetDepartmentById(int id);
+        public Task<Department> GetDepartmentById(int id);
 
-        //public void DeleteDepartment(Department department);
+        public Task<bool> DeleteDepartment(int id);
 
-        //public Department GetEmployeeInDepartment(int id);
+        public Task<IEnumerable<Employee>> GetEmployeeInDepartment(int id);
+
+        public Task<IEnumerable<Department>> GetAllDepartments();
 
 
     }
