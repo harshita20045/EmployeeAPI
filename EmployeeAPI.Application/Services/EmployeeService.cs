@@ -65,7 +65,7 @@ namespace EmployeeAPI.Application.Services
         
         }
 
-        public async Task<Employee> AssignProject(int projectId, int employeeId)
+        public async Task<bool> AssignProject(int projectId, int employeeId)
         {
 
             return await _employee.AssignProject(projectId, employeeId);

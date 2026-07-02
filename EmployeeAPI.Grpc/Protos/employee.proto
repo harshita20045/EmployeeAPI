@@ -3,15 +3,15 @@ syntax = "proto3";
 option csharp_namespace = "EmployeeAPI.Grpc";
 
 
-service EmployeeAPI {
-  rpc GetEmployee (Empty) returns (GetAllEmployeeResponse);
+service EmployeeGrpc {
+  rpc GetEmployee (EmptyRequest) returns (GetAllEmployeeResponse);
   rpc GetEmployeeById (GetEmployeeByIdRequest) returns (GetEmployeeResponse);
   rpc CreateEmployee (CreateEmployeeRequest) returns (GetEmployeeResponse);
   rpc UpdateEmployee (UpdateEmployeeRequest) returns (GetEmployeeResponse);
   rpc DeleteEmployee (DeleteEmployeeRequest) returns (DeleteEmployeeResponse);
 }
 
-message Empty{}
+message EmptyRequest{}
 
 message GetEmployeeResponse{
 	int32 id=1;

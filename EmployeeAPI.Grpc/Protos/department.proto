@@ -1,0 +1,55 @@
+﻿syntax = "proto3";
+
+option csharp_namespace="EmployeeAPI.Grpc";
+
+
+service DepartmentGrpc{
+	rpc CreateDepartment(CreateDepartmentRequest) returns (GetDepartmentResponse);
+	rpc GetDepartmentById(GetDepartmentByIdRequest) returns (GetDepartmentResponse);
+	rpc UpdateDepartment(UpdateDepartmentRequest) returns (GetDepartmentResponse);
+	rpc DeleteDepartment(DeleteDepartmentRequest) returns (DeleteDepartmentResponse);
+	rpc GetEmployeeInDepartment(GetEmployeeInDepartmentRequest) returns (GetEmployeeInDepartmentResponse);
+	rpc GetAllDepartment(Empty) returns (GetAllDepartmentResponse);
+
+}
+
+message Empty{}
+message CreateDepartmentRequest{
+	string name=1;
+}
+message DeleteDepartmentResponse{
+	bool result=1;
+}
+
+
+message GetDepartmentByIdRequest{
+	int32 id=1;
+}
+
+ message GetDepartmentResponse{
+	 string name =1;
+ }
+
+ message GetAllDepartmentResponse{
+	 repeated GetDepartmentResponse departments=1;
+ }
+message UpdateDepartmentRequest{
+	int32 id=1;
+	string name =2;
+}
+
+message DeleteDepartmentRequest{
+	int32 id=1;
+}
+
+message GetEmployeeInDepartmentRequest{
+	int32 id=1;
+}
+message GetEmployeeResponseDepartment{
+	string firstName=1;
+	string lastName = 2;
+	string email = 3;
+}
+message GetEmployeeInDepartmentResponse{
+	repeated GetEmployeeResponseDepartment employees = 1;
+}

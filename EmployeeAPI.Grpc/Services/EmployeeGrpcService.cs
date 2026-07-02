@@ -4,16 +4,16 @@ using EmployeeAPI.Application.Interfaces;
 
 namespace EmployeeAPI.Grpc.Services
 {
-    public class EmployeeGrpcService : EmployeeAPI.EmployeeAPIBase
+    public class EmployeeGrpcService : EmployeeGrpc.EmployeeGrpcBase
     {
         private readonly IEmployeeService _service;
-
+         
         public EmployeeGrpcService(IEmployeeService service)
         {
             _service = service;
         }
 
-        public override async Task<GetAllEmployeeResponse> GetEmployee(Empty request, ServerCallContext context)
+        public override async Task<GetAllEmployeeResponse> GetEmployee(EmptyRequest request, ServerCallContext context)
         {
             var employees =await  _service.GetAllEmployees();
 
@@ -90,19 +90,19 @@ namespace EmployeeAPI.Grpc.Services
             });
         }
 
-        //public override Task<DeleteEmployeeResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
-        //{
-        //    var employee = _service.GetEmployeeById(request.Id);
+        public override Task<DeleteEmployeeResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
+        {
+            var employee = _service.GetEmployeeById(request.Id);
 
-        //    if (employee == null)
-        //        throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
+            if (employee == null)
+                throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
 
-        //    _service.DeleteEmployee(employee);
+            _service.DeleteEmployee(request.Id);
 
-        //    return Task.FromResult(new DeleteEmployeeResponse
-        //    {
-        //        Message = "Employee deleted successfully"
-        //    });
-        //}
+            return Task.FromResult(new DeleteEmployeeResponse
+            {
+                Message = "Employee deleted successfully"
+            });
+        }
     }
 }

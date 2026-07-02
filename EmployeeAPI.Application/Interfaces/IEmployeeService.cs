@@ -26,7 +26,7 @@ public interface IEmployeeService
 
         public IEnumerable<Project> GetProjectOfEmployee(int id);
 
-        public Task<Employee> AssignProject(int projectId, int employeeId);
+        public Task<bool> AssignProject(int projectId, int employeeId);
 
 
 

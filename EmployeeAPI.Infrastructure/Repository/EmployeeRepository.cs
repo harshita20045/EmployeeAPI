@@ -18,9 +18,6 @@ namespace EmployeeAPI.Infrastructure.Repository
 
         public async Task<Employee> AddEmployee(Employee employee)
         {
-
-     
-
            await _context.Employees.AddAsync(employee);
 
            await _context.SaveChangesAsync();
@@ -51,7 +48,9 @@ namespace EmployeeAPI.Infrastructure.Repository
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(e=>e.Id==id);
 
-            _context.Employees.Remove(employee);
+           _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+
             return true;
         }
 
@@ -91,14 +90,19 @@ namespace EmployeeAPI.Infrastructure.Repository
             return _context.Employees.Where(e=>e.Id==id).SelectMany(e=>e.Projects).ToList();
         }
 
-        public async Task<Employee> AssignProject(int projectId, int employeeId)
+        public async Task<bool> AssignProject(int projectId, int employeeId)
         {
             var employee = await _context.Employees.FindAsync(employeeId);
             var projects = await _context.Projects.FindAsync(projectId);
 
+
+            Console.WriteLine("employee",employee);
+            Console.WriteLine(projects);
             employee.Projects.Add(projects);
 
-           return await _context.Employees.Include(p => p.Projects).FirstOrDefaultAsync(e => e.Id == employeeId);
+            await _context.SaveChangesAsync();
+            
+            return true;
            
         }
 

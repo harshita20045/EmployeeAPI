@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+option csharp_namespace="EmployeeAPI.Grpc";
+
+
+
+service ProjectGrpc{
+	rpc CreateProject(CreateProjectRequest) returns (CreateProjectResponse);
+	rpc DeleteProject(DeleteProjectRequest) returns (DeleteProjectResponse);
+	rpc GetAllProject(EmptyProjectequest)  returns (GetAllProjectResponse);
+	rpc GetProjectById(GetProjectByIdRequest)  returns (GetProjectResponse);
+	rpc UpdateProject(UpdateProjectRequest)  returns(GetProjectResponse);
+}
+
+
+enum ProjectStatus {
+   
+    CLOSED = 0;
+    IN_PROGRESS = 1;
+    HOLD = 2;
+}
+
+message EmptyProjectequest{}
+message CreateProjectRequest{
+	string name = 1;
+	string description = 2;
+	int32 duration = 3;
+	ProjectStatus status =4;
+	
+}
+
+
+message CreateProjectResponse{
+
+string name = 1;
+	string description = 2;
+	int32 duration = 3;
+	ProjectStatus status =4;
+}
+
+message DeleteProjectRequest{
+	int32 id=1;
+}
+message DeleteProjectResponse{
+	bool result =1;
+}
+
+message GetProjectResponse{
+	int32 id=1;
+	string name=2;
+	ProjectStatus status=3;
+	int32 duration =4;
+	string description =5;
+}
+
+message GetAllProjectResponse{
+repeated GetProjectResponse projects=1;
+}
+
+message GetProjectByIdRequest{
+	int32 id=1;
+}
+message UpdateProjectRequest{
+
+int32 id=1;
+	string name=2;
+	ProjectStatus status=3;
+	int32 duration =4;
+	string description =5;
+}

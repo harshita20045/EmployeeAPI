@@ -20,7 +20,7 @@ namespace EmployeeAPI.Application.Interfaces
 
         public Task<IEnumerable<EmployeeDto>> GetAllEmployees();
         public IEnumerable<Project> GetProjectOfEmployee(int id);
-        public Task<Employee> AssignProject(int projectId, int employeeId);
+        public Task<bool> AssignProject(int projectId, int employeeId);
 
 
 

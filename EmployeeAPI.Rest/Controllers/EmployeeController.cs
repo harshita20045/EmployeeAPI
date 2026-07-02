@@ -60,17 +60,17 @@ namespace EmployeeAPI.API.Controllers
             return Ok(employee);
         }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    var employee = _services.GetEmployeeById(id);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
 
-        //    if (employee == null)
-        //        return NotFound();
-
-        //    _services.DeleteEmployee(employee);
-        //    return Ok();
-        //}
+          var result= await _services.DeleteEmployee(id);
+            return Ok(new
+            {
+                message="deleted successfully",
+                data =result
+            });
+        }
 
         [HttpGet("{id}/projects")]
         public async Task<IActionResult> GetProjectOfEmployee(int id) {
