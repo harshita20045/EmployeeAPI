@@ -25,9 +25,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<EmployeeQuery>()
-    .AddQueryType<DepartmentQuery>()
-    .AddMutationType<EmployeeMutation>();
+    .AddQueryType<Query>()
+    .AddType<EmployeeQuery>()
+    .AddType<DepartmentQuery>()
+    .AddType<ProjectQuery>()
+    .AddMutationType<Mutation>()
+    .AddType<EmployeeMutation>()
+    .AddType<DepartmentMutation>()
+    .AddType<ProjectMutation>();
 
 var conn = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine("CONNECTION STRING: " + conn);

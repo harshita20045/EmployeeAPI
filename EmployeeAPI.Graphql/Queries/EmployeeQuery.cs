@@ -1,10 +1,12 @@
 ﻿using EmployeeAPI.Domain.Entities;
 using EmployeeAPI.Application.Interfaces;   
-using EmployeeAPI.Application.DTOs;   
+using EmployeeAPI.Application.DTOs;
+
 
 
 namespace EmployeeAPI.Graphql.Queries
 {
+    [ExtendObjectType(typeof(Query))]
     public class EmployeeQuery
     {
         public async Task<IEnumerable<EmployeeDto>> GetAllEmployees([Service] IEmployeeService employeeService)

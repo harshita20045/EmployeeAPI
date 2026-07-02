@@ -4,6 +4,7 @@ using EmployeeAPI.Application.DTOs;
 namespace EmployeeAPI.Graphql.Mutations
 
 {
+    [ExtendObjectType(typeof(Mutation))]
     public class EmployeeMutation
     {
          
