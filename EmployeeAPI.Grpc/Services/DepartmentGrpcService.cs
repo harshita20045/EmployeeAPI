@@ -10,17 +10,17 @@ namespace EmployeeAPI.Grpc.Services
     {
         private readonly IDepartmentService _department;
 
-      public DepartmentGrpcService(IDepartmentService department)
+        public DepartmentGrpcService(IDepartmentService department)
         {
             _department = department;
         }
         public override async Task<GetDepartmentResponse> CreateDepartment(CreateDepartmentRequest request, ServerCallContext context)
         {
 
-            
+
             var department = await _department.AddDepartment(new Application.DTOs.AddDepartmentDto
             {
-                Name=request.Name
+                Name = request.Name
             });
 
             return new GetDepartmentResponse { Name = department.Name };
@@ -39,8 +39,8 @@ namespace EmployeeAPI.Grpc.Services
         {
             var department = await _department.UpdateDepartment(new Application.DTOs.UpdateDepartmentDto
             {
-                Id=request.Id,
-                Name=request.Name
+                Id = request.Id,
+                Name = request.Name
             });
 
             return new GetDepartmentResponse
@@ -61,9 +61,9 @@ namespace EmployeeAPI.Grpc.Services
         {
             var departments = await _department.GetAllDepartments();
             var response = new GetAllDepartmentResponse();
-            response.Departments.AddRange(departments.Select(d=> new GetDepartmentResponse
+            response.Departments.AddRange(departments.Select(d => new GetDepartmentResponse
             {
-                Name=d.Name
+                Name = d.Name
             }));
 
             return response;
@@ -74,17 +74,17 @@ namespace EmployeeAPI.Grpc.Services
         {
             var employees = await _department.GetEmployeeInDepartment(request.Id);
             var response = new GetEmployeeInDepartmentResponse();
-            response.Employees.AddRange(employees.Select(e=>new GetEmployeeResponseDepartment
+            response.Employees.AddRange(employees.Select(e => new GetEmployeeResponseDepartment
             {
-                FirstName=e.FirstName,
-                LastName=e.LastName,
-                Email=e.Email
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                Email = e.Email
 
             }));
             return response;
         }
 
-       
+
 
     }
 }

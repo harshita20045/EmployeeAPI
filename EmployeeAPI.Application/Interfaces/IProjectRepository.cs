@@ -15,6 +15,6 @@ namespace EmployeeAPI.Application.Interfaces
         public Task<Project> GetProjectById(int id);
         public Task<Project> UpdateProject(Project project);
 
-       
+
     }
 }

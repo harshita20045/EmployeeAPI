@@ -10,7 +10,7 @@ using EmployeeAPI.Application.DTOs;
 
 namespace EmployeeAPI.Application.Services
 {
-    public class EmployeeService: IEmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employee;
 
@@ -19,8 +19,8 @@ namespace EmployeeAPI.Application.Services
             _employee = employee;
         }
 
-           public async Task<EmployeeDto> AddEmployee(AddEmployeeInput dto)
-         {
+        public async Task<EmployeeDto> AddEmployee(AddEmployeeInput dto)
+        {
             var employee = new Employee
             {
                 FirstName = dto.FirstName,
@@ -28,10 +28,10 @@ namespace EmployeeAPI.Application.Services
                 Email = dto.Email,
                 DepartmentId = dto.DepartmentId
             };
-         var emp= await  _employee.AddEmployee(employee);
+            var emp = await _employee.AddEmployee(employee);
             return new EmployeeDto
             {
-                Id=emp.Id,
+                Id = emp.Id,
                 FirstName = emp.FirstName,
                 LastName = emp.LastName,
                 Email = emp.Email,
@@ -41,28 +41,66 @@ namespace EmployeeAPI.Application.Services
         public async Task<bool> DeleteEmployee(int id)
         {
 
-         return await  _employee.DeleteEmployee(id);
+            return await _employee.DeleteEmployee(id);
 
 
         }
-        public Employee UpdateEmployee(Employee employee)
-         {
-            _employee.UpdateEmployee(employee);
+        public async Task<UpdateEmployeeDto> UpdateEmployee(UpdateEmployeeDto employee)
+        {
+
+            await _employee.UpdateEmployee(new Employee
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                DepartmentId = employee.DepartmentId
+            });
+
+
             return employee;
         }
 
         public async Task<EmployeeDto> GetEmployeeById(int id)
         {
-            return await _employee.GetEmployeeById(id);
+            var employee = await _employee.GetEmployeeById(id);
+
+            return new EmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                DepartmentName = employee.Department.Name
+            };
         }
 
-          public async Task<IEnumerable<EmployeeDto>> GetAllEmployees()
+        public async Task<IEnumerable<EmployeeDto>> GetAllEmployees()
         {
-            return await _employee.GetAllEmployees();
+
+            var employees = await _employee.GetAllEmployees();
+            return employees.Select(e => new EmployeeDto
+            {
+                Id = e.Id,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                Email = e.Email,
+                DepartmentName = e.Department.Name
+            });
         }
-        public IEnumerable<Project> GetProjectOfEmployee(int id) {
-            return _employee.GetProjectOfEmployee(id);
-        
+        public async Task<IEnumerable<ProjectDto>> GetProjectOfEmployee(int id)
+        {
+
+            var projects = await _employee.GetProjectOfEmployee(id);
+            return projects.Select(p => new ProjectDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Duration = p.Duration,
+                Status = p.Status
+            });
+
         }
 
         public async Task<bool> AssignProject(int projectId, int employeeId)

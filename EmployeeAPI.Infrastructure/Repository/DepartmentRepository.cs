@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeAPI.Infrastructure.Repository
 {
-     public class DepartmentRepository : IDepartmentRepository
+    public class DepartmentRepository : IDepartmentRepository
     {
         private readonly AppDbContext _context;
-        public DepartmentRepository(AppDbContext context) {
+        public DepartmentRepository(AppDbContext context)
+        {
             _context = context;
         }
         public async Task<Department> AddDepartment(Department department)
@@ -21,7 +22,8 @@ namespace EmployeeAPI.Infrastructure.Repository
             return department;
         }
 
-        public async Task<Department> GetDepartmentById(int id) {
+        public async Task<Department> GetDepartmentById(int id)
+        {
 
             return await _context.Departments.FirstOrDefaultAsync(d => d.Id == id);
         }
@@ -30,7 +32,7 @@ namespace EmployeeAPI.Infrastructure.Repository
         {
             return await _context.Departments.ToListAsync();
         }
-       
+
 
         public async Task<bool> DeleteDepartment(int id)
         {
@@ -46,10 +48,12 @@ namespace EmployeeAPI.Infrastructure.Repository
             return result > 0;
         }
 
-        public async Task<Department> UpdateDepartment(Department department) {
+        public async Task<Department> UpdateDepartment(Department department)
+        {
 
             var dept = await _context.Departments.FindAsync(department.Id);
-            if (dept == null) {
+            if (dept == null)
+            {
                 throw new Exception("department does not exist");
             }
             dept.Name = department.Name;
@@ -60,9 +64,9 @@ namespace EmployeeAPI.Infrastructure.Repository
 
         public async Task<IEnumerable<Employee>> GetEmployeeInDepartment(int id)
         {
-            return await _context.Departments.Where(d=>d.Id==id).SelectMany(d=>d.Employees).ToListAsync();
-            
+            return await _context.Departments.Where(d => d.Id == id).SelectMany(d => d.Employees).ToListAsync();
+
         }
-       
+
     }
 }

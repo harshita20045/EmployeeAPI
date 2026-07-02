@@ -9,10 +9,15 @@ service EmployeeGrpc {
   rpc CreateEmployee (CreateEmployeeRequest) returns (GetEmployeeResponse);
   rpc UpdateEmployee (UpdateEmployeeRequest) returns (GetEmployeeResponse);
   rpc DeleteEmployee (DeleteEmployeeRequest) returns (DeleteEmployeeResponse);
+  rpc AssignProject (AssignProjectRequest) returns (AssignProjectResponse);
 }
 
 message EmptyRequest{}
 
+message AssignProjectRequest{
+	int32 projectId=1;
+	int32 employeeId=2;
+}
 message GetEmployeeResponse{
 	int32 id=1;
 	string firstName=2;
@@ -45,5 +50,10 @@ message DeleteEmployeeRequest{
 }
 message DeleteEmployeeResponse{
 	string message=1;
-
+	bool result=2;
 }
+message AssignProjectResponse{
+	string message=1;
+	bool result=2;
+}
+

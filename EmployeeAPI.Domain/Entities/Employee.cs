@@ -1,10 +1,11 @@
 ﻿namespace EmployeeAPI.Domain.Entities
 {
 
-    public enum EmployeeGender { 
-    male,
-    female,
-    other
+    public enum EmployeeGender
+    {
+        male,
+        female,
+        other
     }
     public class Employee
     {
@@ -20,7 +21,7 @@
 
         public string? PhoneNo { get; set; }
 
-        public DateTime? DOB { get; set; } 
+        public DateTime? DOB { get; set; }
 
         public int DepartmentId { get; set; }
 

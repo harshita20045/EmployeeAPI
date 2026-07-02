@@ -12,14 +12,14 @@ namespace EmployeeAPI.Application.Interfaces
     {
         public Task<Employee> AddEmployee(Employee employee);
 
-        public Employee UpdateEmployee(Employee employee);
+        public Task<Employee> UpdateEmployee(Employee employee);
 
         public Task<bool> DeleteEmployee(int id);
 
-        public Task<EmployeeDto?> GetEmployeeById(int id);
+        public Task<Employee> GetEmployeeById(int id);
 
-        public Task<IEnumerable<EmployeeDto>> GetAllEmployees();
-        public IEnumerable<Project> GetProjectOfEmployee(int id);
+        public Task<IEnumerable<Employee>> GetAllEmployees();
+        public Task<IEnumerable<Project>> GetProjectOfEmployee(int id);
         public Task<bool> AssignProject(int projectId, int employeeId);
 
 

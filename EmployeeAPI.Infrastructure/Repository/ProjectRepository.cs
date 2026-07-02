@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeAPI.Infrastructure.Repository
 {
-    public class ProjectRepository :IProjectRepository
+    public class ProjectRepository : IProjectRepository
     {
 
         private readonly AppDbContext _context;
@@ -19,15 +19,17 @@ namespace EmployeeAPI.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<Project> AddProject(Project project) {
-            Console.WriteLine("reposito",project);
+        public async Task<Project> AddProject(Project project)
+        {
+            Console.WriteLine("reposito", project);
             await _context.AddAsync(project);
             await _context.SaveChangesAsync();
             return project;
         }
-        public async Task<bool> DeleteProject(int id) {
-            var project = await _context.Projects.FirstOrDefaultAsync(p=>p.Id==id);
-             _context.Projects.Remove(project);
+        public async Task<bool> DeleteProject(int id)
+        {
+            var project = await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
+            _context.Projects.Remove(project);
             await _context.SaveChangesAsync();
             return true;
 
@@ -40,23 +42,23 @@ namespace EmployeeAPI.Infrastructure.Repository
 
         public async Task<Project> GetProjectById(int id)
         {
-            return await _context.Projects.FirstOrDefaultAsync(p=>p.Id==id);
+            return await _context.Projects.FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Project> UpdateProject(Project project)
         {
-            var projt = await _context.Projects.FirstOrDefaultAsync(p=>p.Id==project.Id);
+            var projt = await _context.Projects.FirstOrDefaultAsync(p => p.Id == project.Id);
             projt.Name = project.Name;
             projt.Status = project.Status;
             projt.Duration = project.Duration;
             projt.Description = project.Description;
 
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return projt;
- 
+
         }
 
-      
+
     }
 }

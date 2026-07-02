@@ -9,17 +9,19 @@ namespace EmployeeAPI.Rest.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DepartmentController :ControllerBase
+    public class DepartmentController : ControllerBase
     {
         private readonly IDepartmentService _services;
 
-        public DepartmentController(IDepartmentService services) {
+        public DepartmentController(IDepartmentService services)
+        {
             _services = services;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDepartment(AddDepartmentDto department) {
-          await  _services.AddDepartment(department);
+        public async Task<IActionResult> AddDepartment(AddDepartmentDto department)
+        {
+            await _services.AddDepartment(department);
             return Ok(new
             {
                 message = "Department added successfully",
@@ -41,7 +43,8 @@ namespace EmployeeAPI.Rest.Controllers
 
         [HttpPut]
 
-        public async Task<IActionResult> UpdateDepartment(UpdateDepartmentDto dto) {
+        public async Task<IActionResult> UpdateDepartment(UpdateDepartmentDto dto)
+        {
             var department = await _services.UpdateDepartment(dto);
 
             return Ok(new
@@ -63,7 +66,8 @@ namespace EmployeeAPI.Rest.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDepartment(int id) {
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
             var result = await _services.DeleteDepartment(id);
             if (result == false)
             {
@@ -76,7 +80,7 @@ namespace EmployeeAPI.Rest.Controllers
             return Ok(new
             {
                 message = "Deleted Successfuly....",
-              
+
             });
         }
 
@@ -87,7 +91,7 @@ namespace EmployeeAPI.Rest.Controllers
             return Ok(new
             {
                 message = "Deleted Successfuly....",
-                data=employees
+                data = employees
             });
         }
     }

@@ -8,7 +8,7 @@ using EmployeeAPI.Application.DTOs;
 
 namespace EmployeeAPI.Application.Interfaces
 {
-   public interface IDepartmentRepository
+    public interface IDepartmentRepository
     {
         public Task<Department> AddDepartment(Department department);
 

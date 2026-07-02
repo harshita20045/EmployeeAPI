@@ -14,26 +14,30 @@ namespace EmployeeAPI.Application.Services
     public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _department;
-        public DepartmentService(IDepartmentRepository department) {
+        public DepartmentService(IDepartmentRepository department)
+        {
             _department = department;
         }
 
-        public async Task<AddDepartmentDto> AddDepartment(AddDepartmentDto dto) {
+        public async Task<AddDepartmentDto> AddDepartment(AddDepartmentDto dto)
+        {
             var department = new Department
             {
                 Name = dto.Name
             };
-           var dept=await _department.AddDepartment(department);
+            var dept = await _department.AddDepartment(department);
             return new AddDepartmentDto
             {
                 Name = dept.Name
             };
         }
 
-        public async Task<DepartmentDto> GetDepartmentById(int id) {
+        public async Task<DepartmentDto> GetDepartmentById(int id)
+        {
             var dept = await _department.GetDepartmentById(id);
-            return new DepartmentDto { 
-            Name=dept.Name
+            return new DepartmentDto
+            {
+                Name = dept.Name
             };
         }
 
@@ -42,7 +46,7 @@ namespace EmployeeAPI.Application.Services
             var dept = new Department
             {
                 Id = department.Id,
-                Name=department.Name
+                Name = department.Name
             };
             await _department.UpdateDepartment(dept);
             return new DepartmentDto
@@ -54,31 +58,31 @@ namespace EmployeeAPI.Application.Services
 
         public async Task<bool> DeleteDepartment(int id)
         {
-            
+
             return await _department.DeleteDepartment(id);
         }
 
         public async Task<IEnumerable<EmployeeListDto>> GetEmployeeInDepartment(int id)
         {
 
-           var employees= await _department.GetEmployeeInDepartment(id);
+            var employees = await _department.GetEmployeeInDepartment(id);
 
-            return employees.Select(e=> new EmployeeListDto
+            return employees.Select(e => new EmployeeListDto
             {
-               
-                FirstName=e.FirstName,
-                LastName=e.LastName,
-                Email=e.Email
+
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                Email = e.Email
 
 
             });
         }
         public async Task<IEnumerable<DepartmentDto>> GetAllDepartments()
         {
-            var department= await _department.GetAllDepartments();
-            return department.Select(d=>new DepartmentDto
+            var department = await _department.GetAllDepartments();
+            return department.Select(d => new DepartmentDto
             {
-                Name=d.Name
+                Name = d.Name
             });
         }
     }

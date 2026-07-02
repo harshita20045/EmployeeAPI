@@ -18,43 +18,43 @@ namespace EmployeeAPI.Infrastructure.Repository
 
         public async Task<Employee> AddEmployee(Employee employee)
         {
-           await _context.Employees.AddAsync(employee);
+            await _context.Employees.AddAsync(employee);
 
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return employee;
         }
 
-        public Employee UpdateEmployee(Employee employee)
+        public async Task<Employee> UpdateEmployee(Employee employee)
         {
-            var existing = _context.Employees.Find(employee.Id);
+            var existing = await _context.Employees.FindAsync(employee.Id);
 
             if (existing == null)
             {
                 throw new Exception($"Employee with Id {employee.Id} not found");
             }
 
-           
+
             existing.FirstName = employee.FirstName;
             existing.LastName = employee.LastName;
             existing.Email = employee.Email;
 
-            _context.SaveChanges();
+          await _context.SaveChangesAsync();
 
             return existing;
         }
 
         public async Task<bool> DeleteEmployee(int id)
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(e=>e.Id==id);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
 
-           _context.Employees.Remove(employee);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<EmployeeDto?> GetEmployeeById(int id)
+        public async Task<Employee> GetEmployeeById(int id)
         {
             var employee = await _context.Employees
                 .Include(e => e.Department)
@@ -63,31 +63,19 @@ namespace EmployeeAPI.Infrastructure.Repository
             if (employee == null)
                 return null;
 
-            return new EmployeeDto
-            {
-                Id = employee.Id,
-                FirstName = employee.FirstName,
-                LastName = employee.LastName,
-                Email = employee.Email,
-                DepartmentName = employee.Department?.Name
-            };
+            return employee;
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetAllEmployees()
+        public async Task<IEnumerable<Employee>> GetAllEmployees()
         {
-            return await _context.Employees.Include(e => e.Department).Select(e => new EmployeeDto {
-         Id = e.Id,
-         FirstName = e.FirstName,
-         LastName = e.LastName,
-         Email = e.Email,
-         DepartmentName = e.Department.Name
-     }).ToListAsync();
+            return await _context.Employees.Include(d => d.Department).ToListAsync();
         }
 
 
-        public IEnumerable<Project> GetProjectOfEmployee(int id) {
+        public async Task<IEnumerable<Project>> GetProjectOfEmployee(int id)
+        {
 
-            return _context.Employees.Where(e=>e.Id==id).SelectMany(e=>e.Projects).ToList();
+            return  _context.Employees.Where(e => e.Id == id).SelectMany(e => e.Projects).ToList();
         }
 
         public async Task<bool> AssignProject(int projectId, int employeeId)
@@ -96,14 +84,14 @@ namespace EmployeeAPI.Infrastructure.Repository
             var projects = await _context.Projects.FindAsync(projectId);
 
 
-            Console.WriteLine("employee",employee);
+            Console.WriteLine("employee", employee);
             Console.WriteLine(projects);
             employee.Projects.Add(projects);
 
             await _context.SaveChangesAsync();
-            
+
             return true;
-           
+
         }
 
     }

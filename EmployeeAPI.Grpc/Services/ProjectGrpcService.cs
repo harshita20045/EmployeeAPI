@@ -14,16 +14,17 @@ namespace EmployeeAPI.Grpc.Services
         {
             var project = await _project.AddProject(new Application.DTOs.AddProjectDto
             {
-                Name=request.Name,
-                Description=request.Description,
-                Duration=request.Duration,
-                Status=(EmployeeAPI.Domain.Entities.ProjectStatus)request.Status
+                Name = request.Name,
+                Description = request.Description,
+                Duration = request.Duration,
+                Status = (EmployeeAPI.Domain.Entities.ProjectStatus)request.Status
             });
-            return new CreateProjectResponse { 
-            Name=project.Name,
-            Description=project.Description,
-            Duration=project.Duration,
-            Status=(EmployeeAPI.Grpc.ProjectStatus)project.Status
+            return new CreateProjectResponse
+            {
+                Name = project.Name,
+                Description = project.Description,
+                Duration = project.Duration,
+                Status = (EmployeeAPI.Grpc.ProjectStatus)project.Status
             };
         }
 
@@ -40,13 +41,13 @@ namespace EmployeeAPI.Grpc.Services
         {
             var projects = await _project.GetProject();
             var response = new GetAllProjectResponse();
-            response.Projects.AddRange(projects.Select(p=>new GetProjectResponse
+            response.Projects.AddRange(projects.Select(p => new GetProjectResponse
             {
-                Id=p.Id,
-                Name=p.Name,
-                Description=p.Description,
-                Duration=p.Duration,
-                Status=(EmployeeAPI.Grpc.ProjectStatus) p.Status
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Duration = p.Duration,
+                Status = (EmployeeAPI.Grpc.ProjectStatus)p.Status
             }));
             return response;
         }
@@ -54,10 +55,11 @@ namespace EmployeeAPI.Grpc.Services
         {
             var project = await _project.GetProjectById(request.Id);
             return new GetProjectResponse
-            {Id=project.Id,
-                Name=project.Name,
-                Description=project.Description,
-                Duration=project.Duration,
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                Duration = project.Duration,
                 Status = (EmployeeAPI.Grpc.ProjectStatus)project.Status
 
             };
@@ -67,19 +69,19 @@ namespace EmployeeAPI.Grpc.Services
             var project = await _project.UpdateProject(new Application.DTOs.ProjectDto
             {
                 Id = request.Id,
-                Name=request.Name,
-                Status=(EmployeeAPI.Domain.Entities.ProjectStatus)request.Status,
-                Duration=request.Duration,
-                Description=request.Description
+                Name = request.Name,
+                Status = (EmployeeAPI.Domain.Entities.ProjectStatus)request.Status,
+                Duration = request.Duration,
+                Description = request.Description
 
             });
 
             return new GetProjectResponse
             {
                 Id = project.Id,
-                Name=project.Name,
-                Description=project.Description,
-                Duration=project.Duration,
+                Name = project.Name,
+                Description = project.Description,
+                Duration = project.Duration,
                 Status = (EmployeeAPI.Grpc.ProjectStatus)project.Status
             };
         }

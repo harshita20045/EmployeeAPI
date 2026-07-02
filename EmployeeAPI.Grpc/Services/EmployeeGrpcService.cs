@@ -7,7 +7,7 @@ namespace EmployeeAPI.Grpc.Services
     public class EmployeeGrpcService : EmployeeGrpc.EmployeeGrpcBase
     {
         private readonly IEmployeeService _service;
-         
+
         public EmployeeGrpcService(IEmployeeService service)
         {
             _service = service;
@@ -15,7 +15,7 @@ namespace EmployeeAPI.Grpc.Services
 
         public override async Task<GetAllEmployeeResponse> GetEmployee(EmptyRequest request, ServerCallContext context)
         {
-            var employees =await  _service.GetAllEmployees();
+            var employees = await _service.GetAllEmployees();
 
             var response = new GetAllEmployeeResponse();
 
@@ -32,7 +32,7 @@ namespace EmployeeAPI.Grpc.Services
 
         public override async Task<GetEmployeeResponse> GetEmployeeById(GetEmployeeByIdRequest request, ServerCallContext context)
         {
-            var employee =await _service.GetEmployeeById(request.Id);
+            var employee = await _service.GetEmployeeById(request.Id);
 
             if (employee == null)
                 throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
@@ -45,7 +45,7 @@ namespace EmployeeAPI.Grpc.Services
                 Email = employee.Email
             };
 
-            return  response;
+            return response;
         }
 
         public override async Task<GetEmployeeResponse> CreateEmployee(CreateEmployeeRequest request, ServerCallContext context)
@@ -55,7 +55,7 @@ namespace EmployeeAPI.Grpc.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                DepartmentId=request.DepartmentId,
+                DepartmentId = request.DepartmentId,
             };
 
             var result = await _service.AddEmployee(employee);
@@ -69,40 +69,52 @@ namespace EmployeeAPI.Grpc.Services
             };
         }
 
-        public override Task<GetEmployeeResponse> UpdateEmployee(UpdateEmployeeRequest request, ServerCallContext context)
+        public override async Task<GetEmployeeResponse> UpdateEmployee(UpdateEmployeeRequest request, ServerCallContext context)
         {
-            var employee = new Domain.Entities.Employee
+            var employee = new EmployeeAPI.Application.DTOs.UpdateEmployeeDto
             {
                 Id = request.Id,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email
+                
             };
 
-            var result = _service.UpdateEmployee(employee);
+            var result =await _service.UpdateEmployee(employee);
 
-            return Task.FromResult(new GetEmployeeResponse
+            return new GetEmployeeResponse
             {
                 Id = result.Id,
                 FirstName = result.FirstName,
                 LastName = result.LastName,
                 Email = result.Email
-            });
+            };
         }
 
-        public override Task<DeleteEmployeeResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
+        public override async Task<DeleteEmployeeResponse> DeleteEmployee(DeleteEmployeeRequest request, ServerCallContext context)
         {
-            var employee = _service.GetEmployeeById(request.Id);
+            var employee = await _service.GetEmployeeById(request.Id);
 
             if (employee == null)
                 throw new RpcException(new Status(StatusCode.NotFound, "Employee not found"));
 
-            _service.DeleteEmployee(request.Id);
+            var result= await  _service.DeleteEmployee(request.Id);
 
-            return Task.FromResult(new DeleteEmployeeResponse
+            return new DeleteEmployeeResponse
             {
-                Message = "Employee deleted successfully"
-            });
+                Message = "Employee deleted successfully",
+                Result=result
+            };
+        }
+
+        public override async Task<AssignProjectResponse> AssignProject(AssignProjectRequest request, ServerCallContext context)
+        {
+            var result = await _service.AssignProject(request.ProjectId, request.EmployeeId);
+            return new AssignProjectResponse
+            {
+                Message = "Assigned Project successfully",
+                Result = result
+            };
         }
     }
 }

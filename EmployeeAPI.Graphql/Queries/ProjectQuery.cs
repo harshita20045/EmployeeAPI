@@ -8,16 +8,17 @@ namespace EmployeeAPI.Graphql.Queries
     [ExtendObjectType(typeof(Query))]
     public class ProjectQuery
     {
-      
 
-       
+
+
         public async Task<IEnumerable<ProjectDto>> GetProject([Service] IProjectService _project)
         {
             return await _project.GetProject();
         }
-        public async Task<ProjectDto> GetProjectById(int id, [Service] IProjectService _project) {
+        public async Task<ProjectDto> GetProjectById(int id, [Service] IProjectService _project)
+        {
             return await _project.GetProjectById(id);
         }
-       
+
     }
 }

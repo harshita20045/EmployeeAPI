@@ -8,10 +8,11 @@ namespace EmployeeAPI.Domain.Entities
 {
 
 
-    public enum ProjectStatus { 
-    Closed,
-    InProgress,
-    Hold
+    public enum ProjectStatus
+    {
+        Closed,
+        InProgress,
+        Hold
     }
     public class Project
     {

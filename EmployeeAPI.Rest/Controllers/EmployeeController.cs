@@ -1,6 +1,5 @@
 ﻿using EmployeeAPI.Application.DTOs;
 using EmployeeAPI.Application.Interfaces;
-using EmployeeAPI.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeAPI.API.Controllers
@@ -16,18 +15,18 @@ namespace EmployeeAPI.API.Controllers
             _services = services;
         }
 
-    
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var employees =await _services.GetAllEmployees();
+            var employees = await _services.GetAllEmployees();
             return Ok(employees);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var employee =await _services.GetEmployeeById(id);
+            var employee = await _services.GetEmployeeById(id);
 
             if (employee == null)
                 return NotFound();
@@ -43,44 +42,40 @@ namespace EmployeeAPI.API.Controllers
                 return BadRequest();
 
             await _services.AddEmployee(employee);
-            return Ok(new{message="employee added successfully",data=employee});
+            return Ok(new { message = "employee added successfully", data = employee });
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Employee employee)
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateEmployeeDto dto)
         {
-            if (id != employee.Id)
-                return BadRequest();
 
-            var existing =await _services.GetEmployeeById(id);
-            if (existing == null)
-                return NotFound();
-
-            _services.UpdateEmployee(employee);
-            return Ok(employee);
+           await _services.UpdateEmployee(dto);
+            return Ok(dto);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
 
-          var result= await _services.DeleteEmployee(id);
+            var result = await _services.DeleteEmployee(id);
             return Ok(new
             {
-                message="deleted successfully",
-                data =result
+                message = "deleted successfully",
+                data = result
             });
         }
 
         [HttpGet("{id}/projects")]
-        public async Task<IActionResult> GetProjectOfEmployee(int id) {
-            var projects = _services.GetProjectOfEmployee(id);
+        public async Task<IActionResult> GetProjectOfEmployee(int id)
+        {
+            var projects = await _services.GetProjectOfEmployee(id);
             return Ok(projects);
         }
 
         [HttpPost("/assignProject")]
-        public async Task<IActionResult> AssignProject(int projectId, int employeeId) {
-            var employee = await _services.AssignProject(projectId,employeeId);
+        public async Task<IActionResult> AssignProject(int projectId, int employeeId)
+        {
+            var employee = await _services.AssignProject(projectId, employeeId);
             return Ok(employee);
 
         }

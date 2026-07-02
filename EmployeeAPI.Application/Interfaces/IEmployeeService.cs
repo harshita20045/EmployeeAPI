@@ -9,22 +9,22 @@ using EmployeeAPI.Domain.Entities;
 
 namespace EmployeeAPI.Application.Interfaces
 {
-public interface IEmployeeService
+    public interface IEmployeeService
     {
         public Task<EmployeeDto> AddEmployee(AddEmployeeInput employee);
 
 
-        public Employee UpdateEmployee(Employee employee);
+        public Task<UpdateEmployeeDto> UpdateEmployee(UpdateEmployeeDto employee);
 
         public Task<bool> DeleteEmployee(int id);
 
 
-      public Task<EmployeeDto> GetEmployeeById(int id);
- 
+        public Task<EmployeeDto> GetEmployeeById(int id);
 
-      public Task<IEnumerable<EmployeeDto>> GetAllEmployees();
 
-        public IEnumerable<Project> GetProjectOfEmployee(int id);
+        public Task<IEnumerable<EmployeeDto>> GetAllEmployees();
+
+        public Task<IEnumerable<ProjectDto>> GetProjectOfEmployee(int id);
 
         public Task<bool> AssignProject(int projectId, int employeeId);
 

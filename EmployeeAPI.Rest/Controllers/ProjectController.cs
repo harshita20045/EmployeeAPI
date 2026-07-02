@@ -6,7 +6,7 @@ namespace EmployeeAPI.Rest.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProjectController :ControllerBase
+    public class ProjectController : ControllerBase
     {
         private readonly IProjectService _service;
 
@@ -22,13 +22,14 @@ namespace EmployeeAPI.Rest.Controllers
             return Ok(new
             {
 
-                message ="All Projects",
-                data=projects
+                message = "All Projects",
+                data = projects
             });
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteProject(int id) {
+        public async Task<IActionResult> DeleteProject(int id)
+        {
             var result = await _service.DeleteProject(id);
             return Ok(new
             {
@@ -39,18 +40,20 @@ namespace EmployeeAPI.Rest.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetProjectById(int id) {
+        public async Task<IActionResult> GetProjectById(int id)
+        {
 
             var project = await _service.GetProjectById(id);
             return Ok(new
             {
-                message="Project By Id :- ",
+                message = "Project By Id :- ",
                 data = project
             });
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProject(ProjectDto dto) {
+        public async Task<IActionResult> UpdateProject(ProjectDto dto)
+        {
             var project = await _service.UpdateProject(dto);
             return Ok(new
             {
@@ -61,8 +64,9 @@ namespace EmployeeAPI.Rest.Controllers
         }
 
         [HttpPost]
- public async Task<IActionResult> AddProject([FromBody] AddProjectDto dto) {
-            Console.WriteLine("cc",dto);
+        public async Task<IActionResult> AddProject([FromBody] AddProjectDto dto)
+        {
+            Console.WriteLine("cc", dto);
             var project = await _service.AddProject(dto);
             return Ok(new
             {

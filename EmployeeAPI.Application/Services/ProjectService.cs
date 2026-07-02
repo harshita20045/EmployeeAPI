@@ -10,7 +10,7 @@ using EmployeeAPI.Domain.Entities;
 
 namespace EmployeeAPI.Application.Services
 {
-    public class ProjectService :IProjectService
+    public class ProjectService : IProjectService
     {
         private readonly IProjectRepository _project;
         public ProjectService(IProjectRepository project)
@@ -22,12 +22,12 @@ namespace EmployeeAPI.Application.Services
             var projt = new Project
             {
                 Name = project.Name,
-                Status=project.Status,
-                Duration=project.Duration,
-                Description=project.Description
+                Status = project.Status,
+                Duration = project.Duration,
+                Description = project.Description
 
             };
-            Console.WriteLine("reh",projt);
+            Console.WriteLine("reh", projt);
             await _project.AddProject(projt);
             return project;
         }
@@ -39,9 +39,9 @@ namespace EmployeeAPI.Application.Services
         public async Task<IEnumerable<ProjectDto>> GetProject()
         {
             var project = await _project.GetProject();
-            return project.Select(p=> new ProjectDto
+            return project.Select(p => new ProjectDto
             {
-                Id=p.Id,
+                Id = p.Id,
                 Name = p.Name,
                 Status = p.Status,
                 Duration = p.Duration,
@@ -49,7 +49,8 @@ namespace EmployeeAPI.Application.Services
             });
         }
 
-        public async Task<ProjectDto> GetProjectById(int id) {
+        public async Task<ProjectDto> GetProjectById(int id)
+        {
             var project = await _project.GetProjectById(id);
 
             return new ProjectDto
@@ -60,11 +61,13 @@ namespace EmployeeAPI.Application.Services
                 Duration = project.Duration,
                 Description = project.Description
             };
-        }   
+        }
 
-        public async Task<ProjectDto> UpdateProject(ProjectDto project) {
+        public async Task<ProjectDto> UpdateProject(ProjectDto project)
+        {
 
-            var projt = new Project {
+            var projt = new Project
+            {
                 Id = project.Id,
                 Name = project.Name,
                 Status = project.Status,
